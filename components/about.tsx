@@ -98,61 +98,27 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              El Equipo Detrás de
-            </motion.span>
-            <span className="bg-gradient-to-r from-teal-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
+             <span className="bg-gradient-to-r from-teal-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
               Nivora Tech
             </span>
+            </motion.span>
+            
           </motion.h2>
 
           <motion.p
-            className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
+            className="text-4xl  text-gray-400 mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Somos un equipo apasionado de desarrolladores, diseñadores y estrategas digitales comprometidos con crear
-            soluciones tecnológicas que marquen la diferencia en el mundo digital.
+            <span className="text-white font-semibold">
+            "Tu aliado en el camino de la transformación digital".
+            </span>
           </motion.p>
         </motion.div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 60, scale: 0.8 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, delay: index * 0.1 }}
-              whileHover={{ y: -10, scale: 1.05 }}
-            >
-              <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-xl text-center p-6 hover:border-teal-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-teal-500/10">
-                <motion.div
-                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${stat.color} p-4 mx-auto mb-4 shadow-lg`}
-                  whileHover={{
-                    rotate: [0, -10, 10, 0],
-                    scale: 1.1,
-                  }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <stat.icon className="h-8 w-8 text-white" />
-                </motion.div>
-                <motion.div
-                  className="text-3xl font-bold text-white mb-2"
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
-                >
-                  {stat.value}
-                </motion.div>
-                <p className="text-gray-400 text-sm font-medium">{stat.label}</p>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+
 
         {/* Story */}
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
@@ -178,20 +144,10 @@ export default function About() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                Nivora Tech nació en 2019 con una visión clara: democratizar el acceso a tecnología de vanguardia para
-                empresas de todos los tamaños. Comenzamos como un pequeño equipo de desarrolladores apasionados
-                trabajando desde un garaje, con grandes sueños y determinación inquebrantable.
+              Nivora Tech nació en 2025 como respuesta a los diversos retos tecnológicos del sector comercial.
+Fundada por John Guevara, en Nivora Tech estamos comprometidos con impulsar el crecimiento de tu negocio mediante la transformación digital y el uso estratégico de la tecnología.
               </motion.p>
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                Hoy, somos una casa de desarrollo reconocida que ha ayudado a más de 80 empresas a transformar sus ideas
-                en realidades digitales exitosas. Nuestro enfoque se centra en la calidad excepcional, la innovación
-                constante y la satisfacción total del cliente.
-              </motion.p>
+ 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -213,7 +169,7 @@ export default function About() {
           >
             <div className="relative rounded-3xl overflow-hidden">
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="/Nosotros.png?height=400&width=600"
                 alt="Nivora Tech Team"
                 width={600}
                 height={400}
@@ -274,58 +230,7 @@ export default function About() {
           </div>
         </motion.div>
 
-        {/* Team */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <motion.h3
-            className="text-4xl font-bold text-center text-white mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            Conoce al Equipo
-          </motion.h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 60, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.7, delay: 0.6 + index * 0.1 }}
-                whileHover={{ y: -15, scale: 1.02 }}
-                className="group"
-              >
-                <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-xl overflow-hidden hover:border-teal-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-teal-500/10">
-                  <div className="relative overflow-hidden">
-                    <Image
-                      src={member.image || "/placeholder.svg"}
-                      alt={member.name}
-                      width={300}
-                      height={300}
-                      className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      initial={false}
-                      whileHover={{ opacity: 1 }}
-                    />
-                  </div>
-                  <CardContent className="p-6 text-center">
-                    <h4 className="text-xl font-bold text-white mb-2">{member.name}</h4>
-                    <p className="text-teal-400 font-medium mb-3">{member.role}</p>
-                    <p className="text-gray-400 text-sm leading-relaxed">{member.bio}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+       
       </div>
     </section>
   )

@@ -4,26 +4,7 @@ import { motion } from "framer-motion"
 import { Code2, Mail, Phone, MapPin, Github, Linkedin, Twitter, Instagram, Heart } from "lucide-react"
 import Link from "next/link"
 
-const footerLinks = {
-  services: [
-    { name: "Desarrollo Web", href: "#" },
-    { name: "Apps Móviles", href: "#" },
-    { name: "E-commerce", href: "#" },
-    { name: "UI/UX Design", href: "#" },
-  ],
-  company: [
-    { name: "Sobre Nosotros", href: "#about" },
-    { name: "Portafolio", href: "#portfolio" },
-    { name: "Blog", href: "#" },
-    { name: "Carreras", href: "#" },
-  ],
-  resources: [
-    { name: "Documentación", href: "#" },
-    { name: "Soporte", href: "#" },
-    { name: "Términos", href: "#" },
-    { name: "Privacidad", href: "#" },
-  ],
-}
+
 
 const socialLinks = [
   { icon: Github, href: "#", label: "GitHub", color: "hover:text-gray-300" },
@@ -125,62 +106,9 @@ export default function Footer() {
             </motion.div>
           </div>
 
-          {/* Services */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-          >
-            <h3 className="text-white font-bold mb-6 text-lg">Servicios</h3>
-            <ul className="space-y-3">
-              {footerLinks.services.map((link, index) => (
-                <motion.li
-                  key={link.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                >
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-blue-400 transition-colors duration-300 hover:translate-x-1 inline-block"
-                  >
-                    {link.name}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-
         
-          {/* Resources */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            <h3 className="text-white font-bold mb-6 text-lg">Recursos</h3>
-            <ul className="space-y-3">
-              {footerLinks.resources.map((link, index) => (
-                <motion.li
-                  key={link.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                >
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-teal-400 transition-colors duration-300 hover:translate-x-1 inline-block"
-                  >
-                    {link.name}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+        
+        
         </div>
 
         {/* Bottom Section */}

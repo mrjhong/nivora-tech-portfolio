@@ -10,38 +10,28 @@ import Image from "next/image"
 
 // Simulando datos de Strapi
 const portfolioData = [
-  {
-    id: 1,
-    title: "E-commerce Platform",
-    description: "Plataforma de comercio electrónico completa con panel de administración",
-    image: "/placeholder.svg?height=400&width=600",
-    category: "E-commerce",
-    technologies: ["Next.js", "Stripe", "PostgreSQL", "Tailwind"],
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: true,
-  },
+ 
   
   {
     id: 3,
-    title: "SaaS Dashboard",
-    description: "Dashboard analítico para gestión de datos empresariales",
-    image: "/placeholder.svg?height=400&width=600",
+    title: "Landing Page GP Handy Solution LLC",
+    description: "Landing page inmobiliaria",
+    image: "/gphandysolutions.png?height=400&width=600",
     category: "Web App",
-    technologies: ["React", "D3.js", "Express", "Redis"],
-    liveUrl: "#",
-    githubUrl: "#",
+    technologies: ["Next js", "Strapi"],
+    liveUrl: "http://31.97.11.43:3050/",
+    githubUrl: "http://31.97.11.43:3050/",
     featured: false,
   },
   {
     id: 4,
-    title: "Real Estate Platform",
-    description: "Plataforma inmobiliaria con búsqueda avanzada y tours virtuales",
-    image: "/placeholder.svg?height=400&width=600",
+    title: "Ms-suite",
+    description: "Aplicativo web para envio masivo de correos y mensajes de texto",
+    image: "/msuite.png?height=400&width=600",
     category: "Web App",
     technologies: ["Vue.js", "Laravel", "MySQL", "Three.js"],
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: "https://github.com/mrjhong/msuite",
+    githubUrl: "https://github.com/mrjhong/msuite",
     featured: false,
   },
  
@@ -279,6 +269,7 @@ export default function Portfolio() {
                       <Button
                         size="sm"
                         className="w-full bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 hover:from-blue-700 hover:via-cyan-700 hover:to-teal-700 shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+                        onClick ={() => window.open(project.liveUrl, "_blank")}
                       >
                         Ver Proyecto
                         <motion.div
@@ -295,6 +286,7 @@ export default function Portfolio() {
                         size="sm"
                         variant="outline"
                         className="border-gray-600 hover:border-blue-400 bg-transparent hover:bg-blue-500/10"
+                        onClick={() => window.open(project.githubUrl, "_blank")}
                       >
                         <Github className="h-4 w-4" />
                       </Button>
