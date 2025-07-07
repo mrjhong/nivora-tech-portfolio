@@ -10,30 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-
-const contactInfo = [
-  {
-    icon: Mail,
-    title: "Email",
-    value: "john.guevara.dev@gmail.com",
-    description: "Respuesta en 24 horas",
-    color: "from-blue-500 to-cyan-500",
-  },
-  {
-    icon: Phone,
-    title: "Teléfono",
-    value: "+57 3015886619",
-    description: "Lun - Vie, 9AM - 6PM",
-    color: "from-cyan-500 to-teal-500",
-  },
-  {
-    icon: MapPin,
-    title: "Ubicación",
-    value: "Bogota, Colombia",
-    description: "También trabajamos remoto",
-    color: "from-teal-500 to-green-500",
-  },
-]
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export default function Contact() {
   const ref = useRef(null)
@@ -44,11 +21,79 @@ export default function Contact() {
     company: "",
     message: "",
   })
+  const { t } = useLanguage()
+  const [formStatus, setFormStatus] = useState<{
+    type: 'idle' | 'loading' | 'success' | 'error';
+    message?: string;
+  }>({ type: 'idle' })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const contactInfo = [
+    {
+      icon: Mail,
+      title: t.contact.info.email.title,
+      value: "john.guevara.dev@gmail.com",
+      description: t.contact.info.email.description,
+      color: "from-blue-500 to-cyan-500",
+    },
+    {
+      icon: Phone,
+      title: t.contact.info.phone.title,
+      value: "+57 3015886619",
+      description: t.contact.info.phone.description,
+      color: "from-cyan-500 to-teal-500",
+    },
+    {
+      icon: MapPin,
+      title: t.contact.info.location.title,
+      value: t.contact.info.location.value,
+      description: t.contact.info.location.description,
+      color: "from-teal-500 to-green-500",
+    },
+  ]
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Aquí integrarías con tu backend/Strapi
-    console.log("Form submitted:", formData)
+    setFormStatus({ type: 'loading' })
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setFormStatus({
+          type: 'success',
+          message: t.hero.language === 'es'
+            ? '¡Mensaje enviado exitosamente! Te contactaremos pronto.'
+            : 'Message sent successfully! We\'ll contact you soon.'
+        })
+        setFormData({ name: "", email: "", company: "", message: "" })
+      } else {
+        setFormStatus({
+          type: 'error',
+          message: data.error || (t.hero.language === 'es'
+            ? 'Error al enviar el mensaje. Inténtalo más tarde.'
+            : 'Error sending message. Please try again later.')
+        })
+      }
+    } catch (error) {
+      setFormStatus({
+        type: 'error',
+        message: t.hero.language === 'es'
+          ? 'Error de conexión. Verifica tu internet e inténtalo nuevamente.'
+          : 'Connection error. Check your internet and try again.'
+      })
+    }
+    // Reset status after 5 seconds
+    setTimeout(() => {
+      setFormStatus({ type: 'idle' })
+    }, 5000)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -60,6 +105,8 @@ export default function Contact() {
 
   return (
     <section id="contact" ref={ref} className="py-32 relative">
+
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -83,7 +130,7 @@ export default function Contact() {
             >
               <MessageCircle className="h-5 w-5 text-orange-400" />
             </motion.div>
-            <span className="text-orange-300 font-semibold">Hablemos</span>
+            <span className="text-orange-300 font-semibold">{t.contact.badge}</span>
           </motion.div>
 
           <motion.h2
@@ -100,10 +147,10 @@ export default function Contact() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              ¿Tienes un Proyecto
+              {t.contact.title}
             </motion.span>
             <span className="bg-gradient-to-r from-orange-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
-              en Mente?
+              {t.contact.subtitle}
             </span>
           </motion.h2>
 
@@ -114,8 +161,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Estamos aquí para ayudarte a convertir tu idea en realidad digital. Contáctanos y comencemos a construir
-            algo increíble juntos que transforme tu visión en éxito.
+            {t.contact.description}
           </motion.p>
         </motion.div>
 
@@ -136,7 +182,7 @@ export default function Contact() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                Información de Contacto
+                {t.contact.infoTitle}
               </motion.h3>
               <div className="space-y-6">
                 {contactInfo.map((info, index) => (
@@ -174,61 +220,7 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* CTA Cards */}
-            <div className="space-y-4">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <Card className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border-blue-400/30 backdrop-blur-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-4">
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                      >
-                        <Calendar className="h-10 w-10 text-blue-400" />
-                      </motion.div>
-                      <div>
-                        <h4 className="font-bold text-white text-lg">Agenda una Consulta Gratuita</h4>
-                        <p className="text-gray-300">30 minutos para discutir tu proyecto sin compromiso</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <Card className="bg-gradient-to-r from-teal-600/20 to-green-600/20 border-teal-400/30 backdrop-blur-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-500">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-4">
-                      <motion.div
-                        animate={{
-                          scale: [1, 1.1, 1],
-                          rotate: [0, 5, -5, 0],
-                        }}
-                        transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
-                      >
-                        <Send className="h-10 w-10 text-teal-400" />
-                      </motion.div>
-                      <div>
-                        <h4 className="font-bold text-white text-lg">Respuesta Rápida</h4>
-                        <p className="text-gray-300">Te contactamos en menos de 24 horas garantizado</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </div>
           </motion.div>
 
           {/* Contact Form */}
@@ -247,7 +239,7 @@ export default function Contact() {
                   >
                     <Sparkles className="h-8 w-8 text-blue-400" />
                   </motion.div>
-                  Envíanos un Mensaje
+                  {t.contact.form.title}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
@@ -261,7 +253,7 @@ export default function Contact() {
                       transition={{ duration: 0.5, delay: 0.1 }}
                     >
                       <Label htmlFor="name" className="text-gray-300 font-medium">
-                        Nombre *
+                        {t.contact.form.name} *
                       </Label>
                       <Input
                         id="name"
@@ -270,7 +262,7 @@ export default function Contact() {
                         onChange={handleChange}
                         required
                         className="bg-slate-800/50 border-slate-600 text-white placeholder:text-gray-400 focus:border-blue-400 focus:ring-blue-400/20 transition-all duration-300"
-                        placeholder="Tu nombre completo"
+                        placeholder={t.contact.form.namePlaceholder}
                       />
                     </motion.div>
                     <motion.div
@@ -281,7 +273,7 @@ export default function Contact() {
                       transition={{ duration: 0.5, delay: 0.2 }}
                     >
                       <Label htmlFor="email" className="text-gray-300 font-medium">
-                        Email *
+                        {t.contact.form.email} *
                       </Label>
                       <Input
                         id="email"
@@ -291,7 +283,7 @@ export default function Contact() {
                         onChange={handleChange}
                         required
                         className="bg-slate-800/50 border-slate-600 text-white placeholder:text-gray-400 focus:border-blue-400 focus:ring-blue-400/20 transition-all duration-300"
-                        placeholder="tu@email.com"
+                        placeholder={t.contact.form.emailPlaceholder}
                       />
                     </motion.div>
                   </div>
@@ -304,7 +296,7 @@ export default function Contact() {
                     transition={{ duration: 0.5, delay: 0.3 }}
                   >
                     <Label htmlFor="company" className="text-gray-300 font-medium">
-                      Empresa
+                      {t.contact.form.company}
                     </Label>
                     <Input
                       id="company"
@@ -312,7 +304,7 @@ export default function Contact() {
                       value={formData.company}
                       onChange={handleChange}
                       className="bg-slate-800/50 border-slate-600 text-white placeholder:text-gray-400 focus:border-blue-400 focus:ring-blue-400/20 transition-all duration-300"
-                      placeholder="Nombre de tu empresa (opcional)"
+                      placeholder={t.contact.form.companyPlaceholder}
                     />
                   </motion.div>
 
@@ -324,7 +316,7 @@ export default function Contact() {
                     transition={{ duration: 0.5, delay: 0.4 }}
                   >
                     <Label htmlFor="message" className="text-gray-300 font-medium">
-                      Mensaje *
+                      {t.contact.form.message} *
                     </Label>
                     <Textarea
                       id="message"
@@ -334,7 +326,7 @@ export default function Contact() {
                       required
                       rows={5}
                       className="bg-slate-800/50 border-slate-600 text-white placeholder:text-gray-400 focus:border-blue-400 focus:ring-blue-400/20 resize-none transition-all duration-300"
-                      placeholder="Cuéntanos sobre tu proyecto, objetivos y cómo podemos ayudarte a alcanzar el éxito digital..."
+                      placeholder={t.contact.form.messagePlaceholder}
                     />
                   </motion.div>
 
@@ -356,11 +348,26 @@ export default function Contact() {
                         className="flex items-center"
                       >
                         <Send className="mr-3 h-5 w-5" />
-                        Enviar Mensaje
+                        {t.contact.form.send}
                       </motion.div>
                     </Button>
                   </motion.div>
                 </form>
+                {formStatus.type !== 'idle' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3 }} // más rápido (antes era ~0.5–0.8s por defecto)
+                    className={`mt-6 p-4 rounded-xl border 
+                      ${formStatus.type === 'success' ? 'border-green-500 bg-green-500/10 text-green-300' : ''} 
+                      ${formStatus.type === 'error' ? 'border-red-500 bg-red-500/10 text-red-300' : ''}`}
+                  >
+                    {formStatus.message}
+                  </motion.div>
+                )}
+
+
               </CardContent>
             </Card>
           </motion.div>

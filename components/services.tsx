@@ -7,41 +7,7 @@ import { useRef } from "react"
 import { Code, Smartphone, Globe, Database, Palette, Zap, ArrowRight, Sparkles } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-
-const services = [
-  {
-    icon: Code,
-    title: "Desarrollo Web",
-    titleEn: "Web Development",
-    description: "Aplicaciones web modernas y escalables con las últimas tecnologías",
-    descriptionEn: "Modern and scalable web applications with cutting-edge technologies",
-    features: ["React/Next.js", "Node.js", "TypeScript", "API REST"],
-    color: "from-blue-500 to-cyan-500",
-    delay: 0.1,
-  },
-  
-  {
-    icon: Globe,
-    title: "E-commerce",
-    titleEn: "E-commerce",
-    description: "Tiendas online completas con sistemas de pago integrados",
-    descriptionEn: "Complete online stores with integrated payment systems",
-    features: [ "MercadoPago", "Stripe", "PayPal"],
-    color: "from-teal-500 to-green-500",
-    delay: 0.3,
-  },
-  {
-    icon: Database,
-    title: "Backend & APIs",
-    titleEn: "Backend & APIs",
-    description: "Arquitecturas robustas y APIs escalables para tus aplicaciones",
-    descriptionEn: "Robust architectures and scalable APIs for your applications",
-    features: ["Node.js", "Python", "PostgreSQL", "MongoDB"],
-    color: "from-blue-600 to-indigo-600",
-    delay: 0.4,
-  },
-  
-]
+import { useLanguage } from "@/contexts/LanguageContext"
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -59,6 +25,34 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => {
 export default function Services() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const { t } = useLanguage()
+
+  const services = [
+    {
+      icon: Code,
+      title: t.services.webDev.title,
+      description: t.services.webDev.description,
+      features: t.services.webDev.features,
+      color: "from-blue-500 to-cyan-500",
+      delay: 0.1,
+    },
+    {
+      icon: Globe,
+      title: t.services.ecommerce.title,
+      description: t.services.ecommerce.description,
+      features: t.services.ecommerce.features,
+      color: "from-teal-500 to-green-500",
+      delay: 0.3,
+    },
+    {
+      icon: Database,
+      title: t.services.backend.title,
+      description: t.services.backend.description,
+      features: t.services.backend.features,
+      color: "from-blue-600 to-indigo-600",
+      delay: 0.4,
+    },
+  ]
 
   return (
     <section id="services" ref={ref} className="py-32 relative">
@@ -79,7 +73,7 @@ export default function Services() {
               >
                 <Sparkles className="h-5 w-5 text-blue-400" />
               </motion.div>
-              <span className="text-blue-300 font-semibold">Nuestros Servicios</span>
+              <span className="text-blue-300 font-semibold">{t.services.badge}</span>
             </motion.div>
 
             <motion.h2
@@ -90,7 +84,7 @@ export default function Services() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-400 bg-clip-text text-transparent block mb-2">
-                Soluciones Tecnológicas
+                {t.services.title}
               </span>
               <motion.span
                 className="text-white"
@@ -99,7 +93,7 @@ export default function Services() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                a tu Medida
+                {t.services.subtitle}
               </motion.span>
             </motion.h2>
 
@@ -110,8 +104,7 @@ export default function Services() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              Ofrecemos un amplio rango de servicios de desarrollo para llevar tu proyecto desde la idea hasta la
-              realidad digital con la más alta calidad y tecnología de vanguardia.
+              {t.services.description}
             </motion.p>
           </div>
         </SectionTitle>
@@ -196,7 +189,7 @@ export default function Services() {
                       variant="ghost"
                       className="w-full text-blue-400 hover:text-white hover:bg-blue-500/20 group/btn border border-blue-400/20 hover:border-blue-400/50 transition-all duration-300"
                     >
-                      <span>Saber más</span>
+                      <span>{t.services.learnMore}</span>
                       <motion.div
                         className="ml-2"
                         animate={{ x: [0, 5, 0] }}

@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { ArrowDown, Sparkles, Zap, Rocket, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRef, useEffect, useState } from "react"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 const AnimatedText = ({ text, className }: { text: string; className?: string }) => {
   return (
@@ -29,6 +30,7 @@ const AnimatedText = ({ text, className }: { text: string; className?: string })
 
 export default function Hero() {
   const ref = useRef(null)
+  const { t } = useLanguage()
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -50,13 +52,6 @@ export default function Hero() {
 
   const scrollToServices = () => {
     const element = document.querySelector("#services")
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-    }
-  }
-
-  const scrollToPortfolio = () => {
-    const element = document.querySelector("#portfolio")
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
     }
@@ -156,7 +151,7 @@ export default function Hero() {
               >
                 <Sparkles className="h-5 w-5 text-blue-400" />
               </motion.div>
-              <span className="text-blue-300 font-semibold">Innovación Digital</span>
+              <span className="text-blue-300 font-semibold">{t.hero.badge}</span>
             </motion.div>
           </motion.div>
 
@@ -167,7 +162,7 @@ export default function Hero() {
             transition={{ duration: 1, delay: 0.4 }}
           >
             <AnimatedText
-              text="Nivora Tech"
+              text={t.hero.title}
               className="bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-400 bg-clip-text text-transparent block mb-4"
             />
             <motion.div
@@ -176,17 +171,7 @@ export default function Hero() {
               transition={{ duration: 1, delay: 1.2 }}
               className="text-2xl md:text-4xl text-gray-300 font-normal"
             >
-              <AnimatedText text="Transformamos Ideas en" />
-              <br />
-              <motion.span
-                className="text-blue-400 font-bold"
-                animate={{
-                  color: ["#60a5fa", "#22d3ee", "#2dd4bf", "#60a5fa"],
-                }}
-                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
-              >
-                <AnimatedText text="Experiencias Digitales" />
-              </motion.span>
+              <AnimatedText text={t.hero.subtitle} />
             </motion.div>
           </motion.h1>
 
@@ -196,11 +181,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.8 }}
           >
-            Somos especialistas en crear{" "}
-            <motion.span className="text-cyan-400 font-semibold" whileHover={{ scale: 1.05 }}>
-              soluciones web innovadoras
-            </motion.span>
-            , sistemas personalizados que impulsan el crecimiento exponencial de tu negocio.
+            {t.hero.description}
           </motion.p>
 
           <motion.div
@@ -216,7 +197,7 @@ export default function Hero() {
                 onClick={scrollToServices}
               >
                 <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}>
-                  Descubre Nuestros Servicios
+                  {t.hero.primaryButton}
                 </motion.span>
               </Button>
             </motion.div>
@@ -226,15 +207,12 @@ export default function Hero() {
                 variant="outline"
                 size="lg"
                 className="border-2 border-blue-400/50 text-blue-300 hover:bg-blue-500/10 hover:text-white hover:border-blue-400 px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 bg-transparent backdrop-blur-sm"
-                onClick={scrollToPortfolio}
               >
-                Ver Portafolio
+                {t.hero.secondaryButton}
               </Button>
             </motion.div>
           </motion.div>
         </motion.div>
-
-     
       </motion.div>
 
       {/* Gradient Overlays */}

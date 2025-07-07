@@ -6,55 +6,34 @@ import { Users, Award, Coffee, Rocket, Target, Heart } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 
-const stats = [
-  { icon: Rocket, label: "Proyectos Completados", value: "150+", color: "from-blue-500 to-cyan-500" },
-  { icon: Users, label: "Clientes Satisfechos", value: "80+", color: "from-cyan-500 to-teal-500" },
-  { icon: Award, label: "Años de Experiencia", value: "5+", color: "from-teal-500 to-green-500" },
-  { icon: Coffee, label: "Tazas de Café", value: "2000+", color: "from-blue-600 to-indigo-600" },
-]
 
-const team = [
-  {
-    name: "Alex Rivera",
-    role: "CEO & Full Stack Developer",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Especialista en arquitecturas escalables y liderazgo técnico",
-  },
-  {
-    name: "Maria González",
-    role: "UI/UX Designer",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Creadora de experiencias digitales memorables y funcionales",
-  },
-  {
-    name: "Carlos Mendoza",
-    role: "Mobile Developer",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Experto en desarrollo móvil multiplataforma",
-  },
-]
-
-const values = [
-  {
-    icon: Target,
-    title: "Precisión",
-    description: "Cada línea de código tiene un propósito específico y está optimizada para el rendimiento",
-  },
-  {
-    icon: Heart,
-    title: "Pasión",
-    description: "Amamos lo que hacemos y se refleja en cada proyecto que entregamos",
-  },
-  {
-    icon: Users,
-    title: "Colaboración",
-    description: "Trabajamos como un equipo unido con nuestros clientes para alcanzar el éxito",
-  },
-]
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export default function About() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const { t } = useLanguage()
+
+
+
+ const values = [
+    {
+      icon: Target,
+      title: t.about.values.precision.title,
+      description: t.about.values.precision.description,
+    },
+    {
+      icon: Heart,
+      title: t.about.values.passion.title,
+      description: t.about.values.passion.description,
+    },
+    {
+      icon: Users,
+      title: t.about.values.collaboration.title,
+      description: t.about.values.collaboration.description,
+    },
+  ]
+
 
   return (
     <section id="about" ref={ref} className="py-32 relative">
@@ -81,7 +60,7 @@ export default function About() {
             >
               <Users className="h-5 w-5 text-teal-400" />
             </motion.div>
-            <span className="text-teal-300 font-semibold">Sobre Nosotros</span>
+            <span className="text-teal-300 font-semibold">{t.about.badge}</span>
           </motion.div>
 
           <motion.h2
@@ -99,7 +78,7 @@ export default function About() {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
              <span className="bg-gradient-to-r from-teal-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
-              Nivora Tech
+              {t.about.subtitle}
             </span>
             </motion.span>
             
@@ -113,7 +92,8 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <span className="text-white font-semibold">
-            "Tu aliado en el camino de la transformación digital".
+              {t.about.description}
+            
             </span>
           </motion.p>
         </motion.div>
@@ -135,28 +115,20 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Nuestra Historia
+              {t.about.story.title}
             </motion.h3>
             <div className="space-y-6 text-gray-400 leading-relaxed">
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-              Nivora Tech nació en 2025 como respuesta a los diversos retos tecnológicos del sector comercial.
-Fundada por John Guevara, en Nivora Tech estamos comprometidos con impulsar el crecimiento de tu negocio mediante la transformación digital y el uso estratégico de la tecnología.
-              </motion.p>
- 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
-                Creemos que la tecnología debe ser accesible, funcional y hermosa. Cada proyecto que emprendemos es una
-                oportunidad de crear algo extraordinario que genere un impacto positivo real en la vida de las personas.
-              </motion.p>
+              {t.about.story.paragraphs.map((paragraph, index) => (
+                <motion.p
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
+                >
+                  {paragraph}
+                </motion.p>
+              ))}
             </div>
           </motion.div>
 
@@ -183,7 +155,6 @@ Fundada por John Guevara, en Nivora Tech estamos comprometidos con impulsar el c
             </div>
           </motion.div>
         </div>
-
         {/* Values */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -199,7 +170,7 @@ Fundada por John Guevara, en Nivora Tech estamos comprometidos con impulsar el c
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Nuestros Valores
+            {t.about.values.title}
           </motion.h3>
           <div className="grid md:grid-cols-3 gap-8">
             {values.map((value, index) => (

@@ -7,9 +7,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
+import { useLanguage } from "@/contexts/LanguageContext"
 
-// Simulando datos de Strapi
-const portfolioData = [
+// Simulando datos de Strapi con traducciones
+
+
+const portfolioDataEs = [
  
   
   {
@@ -37,21 +40,62 @@ const portfolioData = [
  
 ]
 
-const categories = ["Todos", "E-commerce",  "Web App"]
+
+const portfolioDataEn = [
+ 
+  
+  {
+    id: 3,
+    title: "Landing Page GP Handy Solution LLC",
+    description: "Real estate landing page",
+    image: "/gphandysolutions.png?height=400&width=600",
+    category: "Web App",
+    technologies: ["Next js", "Strapi"],
+    liveUrl: "http://31.97.11.43:3050/",
+    githubUrl: "http://31.97.11.43:3050/",
+    featured: false,
+  },
+  {
+    id: 4,
+    title: "Ms-suite",
+    description: "Web application for mass email and SMS sending",
+    image: "/msuite.png?height=400&width=600",
+    category: "Web App",
+    technologies: ["Vue.js", "Laravel", "MySQL", "Three.js"],
+    liveUrl: "https://github.com/mrjhong/msuite",
+    githubUrl: "https://github.com/mrjhong/msuite",
+    featured: false,
+  },
+ 
+]
+
 
 export default function Portfolio() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [selectedCategory, setSelectedCategory] = useState("Todos")
-  const [projects, setProjects] = useState(portfolioData)
+  const { language, t } = useLanguage()
+  const [selectedCategory, setSelectedCategory] = useState(t.portfolio.categories.all)
+  const [projects, setProjects] = useState(language === 'en' ? portfolioDataEn : portfolioDataEs)
+
+  const categories = [
+    t.portfolio.categories.all,
+    t.portfolio.categories.ecommerce,
+    t.portfolio.categories.webapp
+  ]
 
   useEffect(() => {
-    if (selectedCategory === "Todos") {
+    const portfolioData = language === 'en' ? portfolioDataEn : portfolioDataEs
+    if (selectedCategory === t.portfolio.categories.all) {
       setProjects(portfolioData)
     } else {
       setProjects(portfolioData.filter((project) => project.category === selectedCategory))
     }
-  }, [selectedCategory])
+  }, [selectedCategory, language, t.portfolio.categories])
+
+  useEffect(() => {
+    // Reset category when language changes
+    setSelectedCategory(t.portfolio.categories.all)
+  }, [language, t.portfolio.categories.all])
 
   return (
     <section id="portfolio" ref={ref} className="py-32 relative">
@@ -77,7 +121,7 @@ export default function Portfolio() {
             >
               <Eye className="h-5 w-5 text-cyan-400" />
             </motion.div>
-            <span className="text-cyan-300 font-semibold">Nuestro Trabajo</span>
+            <span className="text-cyan-300 font-semibold">{t.portfolio.badge}</span>
           </motion.div>
 
           <motion.h2
@@ -94,10 +138,10 @@ export default function Portfolio() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Proyectos que
+              {t.portfolio.title}
             </motion.span>
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-teal-400 bg-clip-text text-transparent">
-              Transforman Ideas
+              {t.portfolio.subtitle}
             </span>
           </motion.h2>
 
@@ -108,8 +152,7 @@ export default function Portfolio() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Explora algunos de nuestros proyectos más destacados y descubre cómo hemos ayudado a nuestros clientes a
-            alcanzar sus objetivos digitales con soluciones innovadoras.
+            {t.portfolio.description}
           </motion.p>
 
           {/* Category Filter */}
@@ -222,7 +265,7 @@ export default function Portfolio() {
                         >
                           <Sparkles className="h-3 w-3 mr-1" />
                         </motion.div>
-                        Destacado
+                        {t.portfolio.featured}
                       </Badge>
                     </motion.div>
                   )}
@@ -269,9 +312,8 @@ export default function Portfolio() {
                       <Button
                         size="sm"
                         className="w-full bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 hover:from-blue-700 hover:via-cyan-700 hover:to-teal-700 shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
-                        onClick ={() => window.open(project.liveUrl, "_blank")}
                       >
-                        Ver Proyecto
+                        {t.portfolio.viewProject}
                         <motion.div
                           className="ml-2"
                           animate={{ x: [0, 3, 0] }}
@@ -286,7 +328,6 @@ export default function Portfolio() {
                         size="sm"
                         variant="outline"
                         className="border-gray-600 hover:border-blue-400 bg-transparent hover:bg-blue-500/10"
-                        onClick={() => window.open(project.githubUrl, "_blank")}
                       >
                         <Github className="h-4 w-4" />
                       </Button>
@@ -311,7 +352,7 @@ export default function Portfolio() {
               variant="outline"
               className="border-2 border-blue-400/50 text-blue-300 hover:bg-blue-500/10 hover:text-white hover:border-blue-400 px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 bg-transparent backdrop-blur-sm"
             >
-              Ver Todos los Proyectos
+              {t.portfolio.viewAll}
             </Button>
           </motion.div>
         </motion.div>

@@ -5,19 +5,20 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Globe, Code2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 const navigation = [
-  { name: "Inicio", href: "#home", nameEn: "Home" },
-  { name: "Servicios", href: "#services", nameEn: "Services" },
-  { name: "Portafolio", href: "#portfolio", nameEn: "Portfolio" },
-  { name: "Nosotros", href: "#about", nameEn: "About" },
-  { name: "Contacto", href: "#contact", nameEn: "Contact" },
+  { name: "home", href: "#home" },
+  { name: "services", href: "#services" },
+  { name: "portfolio", href: "#portfolio" },
+  { name: "about", href: "#about" },
+  { name: "contact", href: "#contact" },
 ]
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [language, setLanguage] = useState("es")
+  const { language, setLanguage, t } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +34,10 @@ export default function Header() {
       element.scrollIntoView({ behavior: "smooth" })
     }
     setIsOpen(false)
+  }
+
+  const getNavigationText = (key: string) => {
+    return t.header[key as keyof typeof t.header] as string
   }
 
   return (
@@ -95,7 +100,7 @@ export default function Header() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                {language === "es" ? item.name : item.nameEn}
+                {getNavigationText(item.name)}
                 <motion.span
                   className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"
                   initial={{ width: 0 }}
@@ -118,11 +123,17 @@ export default function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-slate-900/95 backdrop-blur-xl border-blue-500/20">
-                <DropdownMenuItem onClick={() => setLanguage("es")} className="text-gray-300 hover:text-blue-400">
-                  Español
+                <DropdownMenuItem 
+                  onClick={() => setLanguage("es")} 
+                  className="text-gray-300 hover:text-blue-400"
+                >
+                  {t.header.spanish}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage("en")} className="text-gray-300 hover:text-blue-400">
-                  English
+                <DropdownMenuItem 
+                  onClick={() => setLanguage("en")} 
+                  className="text-gray-300 hover:text-blue-400"
+                >
+                  {t.header.english}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -163,9 +174,32 @@ export default function Header() {
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ x: 10 }}
                 >
-                  {language === "es" ? item.name : item.nameEn}
+                  {getNavigationText(item.name)}
                 </motion.button>
               ))}
+              
+              {/* Mobile Language Selector */}
+              <div className="border-t border-slate-700/50 mt-4 pt-4">
+                <p className="text-gray-400 text-sm mb-2">Idioma / Language</p>
+                <div className="flex gap-2">
+                  <Button
+                    variant={language === 'es' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setLanguage('es')}
+                    className="flex-1"
+                  >
+                    {t.header.spanish}
+                  </Button>
+                  <Button
+                    variant={language === 'en' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setLanguage('en')}
+                    className="flex-1"
+                  >
+                    {t.header.english}
+                  </Button>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
