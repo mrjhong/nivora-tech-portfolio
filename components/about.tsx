@@ -36,7 +36,7 @@ export default function About() {
 
 
   return (
-    <section id="about" ref={ref} className="py-32 relative">
+    <section id="about" ref={ref} className="py-16 sm:py-24 lg:py-32 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
