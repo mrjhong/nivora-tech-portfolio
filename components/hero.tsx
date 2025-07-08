@@ -56,6 +56,12 @@ export default function Hero() {
       element.scrollIntoView({ behavior: "smooth" })
     }
   }
+  const scrollToPortfolio = () => {
+    const element = document.querySelector("#portfolio")
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
   return (
     <section id="home" ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -207,6 +213,7 @@ export default function Hero() {
                 variant="outline"
                 size="lg"
                 className="border-2 border-blue-400/50 text-blue-300 hover:bg-blue-500/10 hover:text-white hover:border-blue-400 px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 bg-transparent backdrop-blur-sm"
+                onClick={scrollToPortfolio}
               >
                 {t.hero.secondaryButton}
               </Button>

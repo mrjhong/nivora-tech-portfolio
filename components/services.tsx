@@ -184,21 +184,7 @@ export default function Services() {
                     ))}
                   </div>
 
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Button
-                      variant="ghost"
-                      className="w-full text-blue-400 hover:text-white hover:bg-blue-500/20 group/btn border border-blue-400/20 hover:border-blue-400/50 transition-all duration-300"
-                    >
-                      <span>{t.services.learnMore}</span>
-                      <motion.div
-                        className="ml-2"
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                      >
-                        <ArrowRight className="h-4 w-4" />
-                      </motion.div>
-                    </Button>
-                  </motion.div>
+               
                 </CardContent>
               </Card>
             </motion.div>
